@@ -8,6 +8,7 @@ import org.apache.hadoop.hbase.mapreduce.TableInputFormat
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.hadoop.hbase.util.Bytes
+import org.apache.spark.broadcast.Broadcast
 object SparkHbase {
   def main(args: Array[String]): Unit = {
 
@@ -16,6 +17,10 @@ object SparkHbase {
 
     //创建SparkContext
     val sc = new SparkContext(sparkConf)
+
+    //增加广播变量
+    val ruleRDD: RDD[String] = sc.textFile("/var/data/tobroadcastInput")
+    val rule: Broadcast[RDD[String]] = sc.broadcast(ruleRDD)
 
     //构建HBase配置信息
     val conf: Configuration = HBaseConfiguration.create()
