@@ -37,6 +37,8 @@ object SparkHbase {
     //打印数据
     hbaserdd.foreach {
       case (_, result) =>
+        //获取广播变量
+        val rules: RDD[String] = rule.value
         val key: String = Bytes.toString(result.getRow)
         val name: String = Bytes.toString(result.getValue(Bytes.toBytes("infor"), Bytes.toBytes("name")))
         val color: String = Bytes.toString(result.getValue(Bytes.toBytes("infor"), Bytes.toBytes("age")))
